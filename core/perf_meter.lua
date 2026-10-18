@@ -1057,7 +1057,7 @@ end
 
 local function DrawTimingTableScrollArea()
     if (imgui.BeginChild ~= nil and imgui.EndChild ~= nil) then
-        imgui.BeginChild('##libraplates_perf_timing_scroll', { 0, -110 }, false);
+        imgui.BeginChild('##libraplates_perf_timing_scroll', { 0, -110 }, _G.ImGuiChildFlags_None);
         DrawTimingTable();
         imgui.EndChild();
         return;

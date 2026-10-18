@@ -5665,19 +5665,20 @@ end
 function DrawChild(name, size, border, render, padded, childFlags)
     local childError = nil;
     local childIndent = (padded == false) and 0 or 8;
+    local childBorderFlags = (border == true) and (_G.ImGuiChildFlags_Borders or 0) or (_G.ImGuiChildFlags_None or 0);
 
     if (tonumber(childFlags) ~= nil and tonumber(childFlags) ~= 0) then
         local beganWithFlags = false;
         local ok = pcall(function()
-            imgui.BeginChild(name, size, border, childFlags);
+            imgui.BeginChild(name, size, childBorderFlags, childFlags);
             beganWithFlags = true;
         end);
 
         if (ok ~= true or beganWithFlags ~= true) then
-            imgui.BeginChild(name, size, border);
+            imgui.BeginChild(name, size, childBorderFlags);
         end
     else
-        imgui.BeginChild(name, size, border);
+        imgui.BeginChild(name, size, childBorderFlags);
     end
 
     if (childIndent > 0) then
@@ -6979,7 +6980,7 @@ function LibraPlatesSettingsDrawBoxedPage(childId, render)
         pushedPageBg = 1;
     end
 
-    imgui.BeginChild('##' .. tostring(childId or 'SettingsBoxedPage'), { math.max(280, tonumber(pageWidth) or 280), math.max(260, tonumber(pageHeight) or 260) }, false);
+    imgui.BeginChild('##' .. tostring(childId or 'SettingsBoxedPage'), { math.max(280, tonumber(pageWidth) or 280), math.max(260, tonumber(pageHeight) or 260) }, _G.ImGuiChildFlags_None);
     if (imgui.Indent ~= nil) then imgui.Indent(childPadX); end
     render(math.max(1, (tonumber(pageWidth) or 280) - (childPadX * 2)));
     if (imgui.Unindent ~= nil) then imgui.Unindent(childPadX); end
@@ -9315,7 +9316,7 @@ local function DrawQuickMenuCustomActionsPanel(menu)
             local filter = DrawPickerFilter(popupId .. 'Filter', stateKey);
             local beganChild = false;
             if (imgui.BeginChild ~= nil) then
-                imgui.BeginChild(popupId .. 'List', { 420, 260 }, true);
+                imgui.BeginChild(popupId .. 'List', { 420, 260 }, _G.ImGuiChildFlags_Borders);
                 beganChild = true;
             end
 
@@ -9467,7 +9468,7 @@ local function DrawQuickMenuCustomActionsPanel(menu)
             local filter = DrawPickerFilter(popupId .. 'Filter', 'iconFilter');
             local beganChild = false;
             if (imgui.BeginChild ~= nil) then
-                imgui.BeginChild(popupId .. 'List', { 420, 300 }, true);
+                imgui.BeginChild(popupId .. 'List', { 420, 300 }, _G.ImGuiChildFlags_Borders);
                 beganChild = true;
             end
 
@@ -9574,7 +9575,7 @@ local function DrawQuickMenuCustomActionsPanel(menu)
         local listHeight = (#menu.self.customActions > 3) and 104 or math.max(48, (#menu.self.customActions * 28) + 12);
         local beganChild = false;
         if (imgui.BeginChild ~= nil) then
-            imgui.BeginChild('##QuickMenuCustomCommandsList', { 560, listHeight }, true);
+            imgui.BeginChild('##QuickMenuCustomCommandsList', { 560, listHeight }, _G.ImGuiChildFlags_Borders);
             beganChild = true;
         end
 
@@ -10854,7 +10855,7 @@ local function DrawGeneralMouseSection()
         pushedPageBg = 1;
     end
 
-    imgui.BeginChild('##MousePageContent', { math.max(280, tonumber(pageWidth) or 280), math.max(260, tonumber(pageHeight) or 260) }, false);
+    imgui.BeginChild('##MousePageContent', { math.max(280, tonumber(pageWidth) or 280), math.max(260, tonumber(pageHeight) or 260) }, _G.ImGuiChildFlags_None);
     if (imgui.Indent ~= nil) then imgui.Indent(16); end
 
     DrawMousePanel('Cursor', function()
@@ -11970,7 +11971,7 @@ local function DrawGeneralVisibilitySection(settings)
         pushedPageBg = 1;
     end
 
-    imgui.BeginChild('##VisibilityPageContent', { math.max(280, tonumber(pageWidth) or 280), math.max(260, tonumber(pageHeight) or 260) }, false);
+    imgui.BeginChild('##VisibilityPageContent', { math.max(280, tonumber(pageWidth) or 280), math.max(260, tonumber(pageHeight) or 260) }, _G.ImGuiChildFlags_None);
     if (imgui.Indent ~= nil) then imgui.Indent(16); end
 
     DrawVisibilityPanel('World plate filters', function()
@@ -12260,7 +12261,7 @@ local function DrawGeneralProfilesSection()
         pushedPageBg = 1;
     end
 
-    imgui.BeginChild('##ProfilesPageContent', { math.max(280, tonumber(pageWidth) or 280), math.max(260, tonumber(pageHeight) or 260) }, false);
+    imgui.BeginChild('##ProfilesPageContent', { math.max(280, tonumber(pageWidth) or 280), math.max(260, tonumber(pageHeight) or 260) }, _G.ImGuiChildFlags_None);
     if (imgui.Indent ~= nil) then imgui.Indent(16); end
 
     DrawProfilePanel('Profiles', function()
@@ -15595,7 +15596,7 @@ local function DrawHelpUserGuide()
     local beganChild = false;
 
     if (imgui.BeginChild ~= nil) then
-        imgui.BeginChild('##UserGuideBody', { math.max(260, tonumber(contentWidth) or 260), math.max(120, tonumber(contentHeight) or 120) }, false);
+        imgui.BeginChild('##UserGuideBody', { math.max(260, tonumber(contentWidth) or 260), math.max(120, tonumber(contentHeight) or 120) }, _G.ImGuiChildFlags_None);
         beganChild = true;
     end
 
@@ -15687,7 +15688,7 @@ local function DrawHelpFindSettings()
     end
 
     if (imgui.BeginChild ~= nil) then
-        imgui.BeginChild('##FindSettingsResults', { 0, 0 }, false);
+        imgui.BeginChild('##FindSettingsResults', { 0, 0 }, _G.ImGuiChildFlags_None);
     end
 
     if (query ~= '') then
