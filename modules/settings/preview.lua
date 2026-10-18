@@ -3180,6 +3180,7 @@ local function DrawPreviewCornerIconButton(drawList, id, textureId, x, y, size, 
         previewControlClickConsumed = true;
     end
 
+    imgui.Dummy({ size, size });
     return clicked;
 end
 
